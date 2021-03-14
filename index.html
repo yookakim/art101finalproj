@@ -1,4 +1,45 @@
 <html>
-  <head>
-  </head>
+<head>
+  <title>Focus Timer: Art101 Final Project</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="js/project.js" defer></script>
+</head>
+<body>
+  <div class="wrapper">
+    <audio volume="0.2" id="audioplayer">
+      <source src="audio/windchimes_sfx.wav" type="audio/wav" id="timersound">
+    </audio>
+    <div id="header">
+      <h1>Art101 Final Project: Focus Timer</h1>
+    </div>
+    <div id="content">
+      <div id="left-panel">
+        <div id="timerdisplay">88:88</div>
+        <div id="settings">
+          <form id="worktimerform">
+            <label for="worktimer">Work Session length (minutes): </label>
+            <input type="number" class="timerinput" id="worktimerinput" name="worktimer" value="25" max="59" step=".05">
+            <button type="button" id="worktimerbutton">Work!</button>
+          </form>
+          <form id="breaktimerform">
+            <label for="breaktimer">Break Session length (minutes): </label>
+            <input type="number" class="timerinput" id="breaktimerinput" name="breaktimer" value="5" max="59" step=".1">
+            <button type="button" id="breaktimerbutton">Break!</button>
+          </form>
+        </div>
+      </div>
+      <div id="right-panel">
+        <div id="statistics">
+          <p>Total Work Sessions Completed: <span id="totalworksessionscompleted">0</span></p><br>
+          <button type="button" id="clearsessioncountbutton">Clear Work Session Count</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+
+  </footer>
+</body>
 </html>

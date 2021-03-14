@@ -1,0 +1,71 @@
+* {
+  color: white;
+  font-family: Georgia;
+  font-size: 20px;
+}
+
+.wrapper, #header {
+  max-width: 1280px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+#header {
+  padding: 10px;
+  background-color: black;
+}
+
+#content {
+  background-color: black;
+  padding: 10px;
+  margin-top: 5px;
+  text-align: left;
+  display: inline-flex;
+}
+
+#left-panel {
+  width: 700px;
+  background-color: dimgray;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+#timerdisplay{
+  font-size: 90px;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: green;
+  padding: 5px;
+  text-align: center;
+}
+
+#settings {
+  margin-top: 15px;
+  padding: 5px;
+  background-color: white;
+  text-align: center;
+}
+
+#settings * {
+  color: black;
+}
+
+#worktimerform {
+  margin-top: 20px;
+}
+
+.timerinput {
+  color: black;
+  width: 100px;
+}
+
+#right-panel {
+  width: 400px;
+  background-color: dimgray;
+  margin-left: 10px;
+  padding: 10px;
+}
+
+#clearSessionCountButton {
+  color: black;
+}
