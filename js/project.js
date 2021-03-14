@@ -20,8 +20,11 @@ var workSessionsDisplayCount = $('#totalworksessionscompleted');
 
 
 function initializeAudio() {
-  var audioplayer = document.getElementById('audioplayer');
-  audioplayer.volume = 0.2;
+  var windchimes = document.getElementById('windchimes');
+  windchimes.volume = 0.2;
+
+  var alarm = document.getElementById('alarm');
+  alarm.volume = 0.2;
 }
 
 function getWorkSessions() {
@@ -82,7 +85,7 @@ worktimerbutton.click(function() {
       // Timer reached 0, do timer end stuff
       timerDisplay.text("00:00");
       clearInterval(timerFunc);
-      audioplayer.play();
+      alarm.play();
       addWorkSession();
       workSessionsDisplayCount.text(getWorkSessions());
     } else {
@@ -100,7 +103,7 @@ breaktimerbutton.click(function() {
 
   timeLengthMilliseconds = timeLength * 1000 * 60;
 
-  target = Date.now() + timeLengthMilliseconds; 
+  target = Date.now() + timeLengthMilliseconds;
 
   var timerFunc = setInterval(function() {
 
@@ -122,6 +125,7 @@ breaktimerbutton.click(function() {
       // Timer reached 0, do timer end stuff
       timerDisplay.text("00:00");
       clearInterval(timerFunc);
+      alarm.play();
     } else {
       // Still time remaining, update time and loop again
       timerDisplay.text(minutes + ":" + seconds);

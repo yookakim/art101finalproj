@@ -66,6 +66,20 @@
   padding: 10px;
 }
 
+#statistics {
+  margin-bottom: 10px;
+}
+
+#statistics p {
+  margin: 5px;
+}
+
+#tasklist-container {
+  border-top: black;
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
 #clearSessionCountButton {
   color: black;
 }

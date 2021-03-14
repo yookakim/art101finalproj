@@ -8,8 +8,11 @@
 </head>
 <body>
   <div class="wrapper">
-    <audio volume="0.2" id="audioplayer">
-      <source src="audio/windchimes_sfx.wav" type="audio/wav" id="timersound">
+    <audio volume="0.2" id="windchimes">
+      <source src="audio/windchimes_sfx.wav" type="audio/wav">
+    </audio>
+    <audio volume="0.2" id="alarm">
+      <source src="audio/alarm.mp3" type="audio/mp3">
     </audio>
     <div id="header">
       <h1>Art101 Final Project: Focus Timer</h1>
@@ -20,20 +23,25 @@
         <div id="settings">
           <form id="worktimerform">
             <label for="worktimer">Work Session length (minutes): </label>
-            <input type="number" class="timerinput" id="worktimerinput" name="worktimer" value="25" max="59" step=".05">
+            <input type="number" class="timerinput" id="worktimerinput" name="worktimer" value="25" max="59" min="0" step=".05">
             <button type="button" id="worktimerbutton">Work!</button>
           </form>
           <form id="breaktimerform">
             <label for="breaktimer">Break Session length (minutes): </label>
-            <input type="number" class="timerinput" id="breaktimerinput" name="breaktimer" value="5" max="59" step=".1">
+            <input type="number" class="timerinput" id="breaktimerinput" name="breaktimer" value="5" max="59" min="0" step=".05 ">
             <button type="button" id="breaktimerbutton">Break!</button>
           </form>
         </div>
       </div>
       <div id="right-panel">
         <div id="statistics">
-          <p>Total Work Sessions Completed: <span id="totalworksessionscompleted">0</span></p><br>
+          <p>Total Work Sessions Completed: <span id="totalworksessionscompleted">0</span></p>
           <button type="button" id="clearsessioncountbutton">Clear Work Session Count</button>
+        </div>
+        <div id="tasklist-container">
+          <ul id="tasklist">
+            <li class="tasklist-item">Test Item</li>
+          </ul>
         </div>
       </div>
     </div>
