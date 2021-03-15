@@ -74,10 +74,24 @@
   margin: 5px;
 }
 
-#tasklist-container {
+#tasks-section {
   border-top: black;
   border-top-width: 1px;
   border-top-style: solid;
+  padding-top: 10px;
+}
+
+#task-title-input {
+  width: 150px;
+  color: black;
+}
+
+#add-task-button {
+  background-color: dimgray;
+}
+
+#tasklist-container {
+  display: block;
 }
 
 #clearSessionCountButton {

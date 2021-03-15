@@ -38,10 +38,15 @@
           <p>Total Work Sessions Completed: <span id="totalworksessionscompleted">0</span></p>
           <button type="button" id="clearsessioncountbutton">Clear Work Session Count</button>
         </div>
-        <div id="tasklist-container">
-          <ul id="tasklist">
-            <li class="tasklist-item">Test Item</li>
-          </ul>
+        <div id="tasks-section">
+          
+          <form id="new-task-input">
+            <label for="task-title-input">Task Title: </label>
+            <input type="text" id="task-title-input" name="task-title-input">
+            <button id="add-task-button" type="button">Add Task</button>
+          </form>
+          <div id="tasklist-container">
+          </div>
         </div>
       </div>
     </div>
