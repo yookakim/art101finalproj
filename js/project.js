@@ -1,20 +1,20 @@
 /*
-  Art101 Final Project
+  Art101 2021 Spring Quarter Final Project
 
+  Yooha Kim
 */
 
-//var worktimerinput = document.getElementById("worktimerinput");
-//var breaktimerinput = document.getElementById("breaktimerinput");
 
 const taskItemTemplate = document.createElement('template');
 
+// Template element that gets inserted into 
 taskItemTemplate.innerHTML = `
   <style>
     div {
       font-family: courier;
     }
     .taskcontainer {
-      display: flex;
+      display: block;
       padding-top: 5px;
       padding-bottom: 5px;
       border-top: darkgray;
@@ -24,7 +24,7 @@ taskItemTemplate.innerHTML = `
     .tasktitle {
       padding-right: 10px;
     }
-    .taskbutton {
+    .removetaskbutton {
       display: inline-block;
     }
   </style>
@@ -32,12 +32,15 @@ taskItemTemplate.innerHTML = `
     <div class="tasktitle">
       Test Template
     </div>
-    <button class="taskbutton">Remove Task</button>
+    <button class="removetaskbutton">Remove Task</button>
+    <button class="taskcompletebutton">Completed!</button>
   </div>
 `;
 
-class TaskItem extends HTMLElement {
-  constructor(title, index) {
+class TaskItem extends HTMLElement
+{
+  constructor(title, index)
+  {
     super();
 
     this.attachShadow( {mode : 'open' });
@@ -48,38 +51,57 @@ class TaskItem extends HTMLElement {
     this.priority;
 
     this.shadowRoot.querySelector(".tasktitle").innerHTML = title;
-    this.shadowRoot.querySelector(".taskbutton").addEventListener('click', () => this.removeTask());
+    this.shadowRoot.querySelector(".removetaskbutton").addEventListener('click', () => this.removeTask());
+    this.shadowRoot.querySelector(".taskcompletebutton").addEventListener('click', () => this.completeTask());
   }
 
-  removeTask() {
+  removeTask()
+  {
     console.log('removed task');
-    this.shadowRoot.querySelector(".tasktitle").innerHTML = 'test lol';
     this.parentNode.removeChild(this);
-    taskList.splice(this.index);
+    console.log(this);
+    taskList.splice(this.index, 1);
+
+    console.log(taskList);
+    window.localStorage.setItem('taskList', JSON.stringify(taskList));
+    console.log(JSON.stringify(taskList));
+
+    // we have to refresh the stored index value in each TaskItem after the array is modified or else it will be out of order
+    for (let i = 0; i < taskList.length; i++)
+    {
+      taskList[i].index = i;
+    }
   }
 
-  toJSON() {
+  completeTask()
+  {
+    this.removeTask();
+    incrementTasksCompleted();
+  }
+
+  toJSON()
+  {
     // when JSON.stringify() is called on this class object, it looks for this method first then takes the object it returns
-    // so we pass in the properties we need to build the task
+    // so we pass in the properties we need to build the task item
     return {
       title: this.title,
       index: this.index
     }
   }
 
-  connectedCallback() {
+  connectedCallback()
+  {
     // this.shadowRoot.querySelector(".taskbutton").addEventListener('click', () => this.removeTask());
   }
 }
 
 window.customElements.define('task-item', TaskItem);
 
-var taskList2 = ["test1", { test2: 'test2'}, 'test3'];
 var taskList = [];
 
+// Input fields
 var worktimerinput = $('#worktimerinput');
 var breaktimerinput = $('#breaktimerinput');
-
 var tasktitleinput = $('#task-title-input');
 
 // Buttons
@@ -88,18 +110,56 @@ var breaktimerbutton = $('#breaktimerbutton');
 var clearsessioncountbutton = $('#clearsessioncountbutton');
 var addtaskbutton = $('#add-task-button');
 
+// Display
 var timerDisplay = $('#timerdisplay');
 var workSessionsDisplayCount = $('#totalworksessionscompleted');
+var tasksCompletedDisplayCount = $('#totaltaskscompleted');
 
 var tasklistContainer = $('#tasklist-container');
 
-function addTask(titleString) {
+function getWorkSessions()
+{
+  // since localStorage only stores data in the form of key <-> string pairs, change string to number before use/display
+  return Number(window.localStorage.getItem('totalWorkSessions'));
+}
+
+function getTaskCompletionCount()
+{
+  // since localStorage only stores data in the form of key <-> string pairs, change string to number before use/display
+  return Number(window.localStorage.getItem('totalTasksCompleted'));
+}
+
+function incrementSessionsCompleted()
+{
+  window.localStorage.setItem('totalWorkSessions', getWorkSessions() + 1);
+}
+
+function incrementTasksCompleted()
+{
+  console.log('increment tasks completed');
+  window.localStorage.setItem('totalTasksCompleted', getTaskCompletionCount() + 1);
+  tasksCompletedDisplayCount.text(getTaskCompletionCount());
+  console.log(getTaskCompletionCount());
+}
+
+function clearWorkSessionCount()
+{
+  window.localStorage.removeItem('totalWorkSessions');
+}
+
+function clearTasksCompletedCount()
+{
+  window.localStorage.removeItem('totalTasksCompleted');
+}
+
+function addTask(titleString)
+{
   // create new task item/object
   // add the task object to the global tasklist array
   // parse the array to JSON and store to localStorage (immediately)
   // call refresh function to update the display of task list in DOM?
 
-  // create the new task
+  // create the new task, and initialize the task with its current location in the task list (by getting the length of the array)
   var newTask = new TaskItem(titleString, taskList.length);
 
   // add the new task to the list
@@ -113,13 +173,11 @@ function addTask(titleString) {
   refreshList();
 }
 
-function refreshList() {
-  // should it go through for loop and append each list object, or should it create the whole element and attach that instead?
-  // processing overhead to redraw entire list each time probably isn't that big of a deal
-
-  var newList = document.createElement('div');
-
-  for (let i = 0; i < taskList.length; i++) {
+function refreshList()
+{
+  // Every time a list item is added, deleted, or when the page is refreshed and the local data is loaded in, redraw list
+  for (let i = 0; i < taskList.length; i++)
+  {
     // newList.append(taskList[i]);
     tasklistContainer.append(taskList[i]);
   }
@@ -128,7 +186,8 @@ function refreshList() {
 }
 
 
-function initializeAudio() {
+function initializeAudio()
+{
   var windchimes = document.getElementById('windchimes');
   windchimes.volume = 0.2;
 
@@ -136,70 +195,107 @@ function initializeAudio() {
   alarm.volume = 0.2;
 }
 
-function initializeStorageItems() {
+function initializeStorageItems()
+{
 
   // initialize work sessions count
   if (!window.localStorage.hasOwnProperty('totalWorkSessions')) {
     window.localStorage.setItem('totalWorkSessions', 0);
-    console.log('Empty local storage, initializing work session count');
-  } else {
+    console.log('Empty local storage for work session count, adding fresh entry');
+  } 
+  else 
+  {
     workSessionsDisplayCount.text(getWorkSessions());
   }
 
+  // initialize tasks completed count
+  if (!window.localStorage.hasOwnProperty('totalTasksCompleted'))
+  {
+    window.localStorage.setItem('totalTasksCompleted', 0);
+    console.log('Empty local storage for task completion count, adding fresh entry');
+  }
+  else
+  {
+    tasksCompletedDisplayCount.text(getTaskCompletionCount());
+  }
+
   // initialize list of tasks
-  /*
-    if (list item doesn't exist in local storage) {
-      storeListToStorage();    // this would be another function defined somewhere, do setItem() and stringify the global taskList array before passing through 
-      or,
-      window.localStorage.setItem('taskList', )
-    } else {
-      // the list does exist in storage
-      updateList();            // reusable function that would refresh/update the task list?
+  if (!window.localStorage.hasOwnProperty('taskList')) 
+  {
 
-    }
-  */
+    // the task list wasn't found, so create a new one
+    window.localStorage.setItem('taskList', JSON.stringify(taskList));
+    console.log('No task list found in local storage, creating one');
+  } 
+  else
+  {
+    // the task list exists in localStorage, so:
+    // 1. retrieve existing task list string from localStorage
+    // 2. parse the string into JSON
+    // 3. run function which creates a new TaskList object out of each object in the JSON
+
+    var stringToParse = window.localStorage.getItem('taskList');
+
+    var taskListJSON = jQuery.parseJSON(stringToParse);
+    console.log(taskListJSON);
+
+    taskListJSON.forEach((entry) =>
+    {
+      if (entry.hasOwnProperty('title')) {
+        // although we should reasonably only have objects storing the TaskItem properties 
+        // in this JSON, we check that the object has the 'title' property just in case 
+        addTask(entry.title);
+      }
+    });
+    refreshList();
+  }
 }
 
-function getWorkSessions() {
-  // since localStorage only stores data in the form of key <-> string pairs, change string to number before use/display
-  return Number(window.localStorage.getItem('totalWorkSessions'));
-}
 
-function addWorkSession() {
-  window.localStorage.setItem('totalWorkSessions', getWorkSessions() + 1);
-}
+/*
+  Initialize application upon document ready
+*/
+$(document).ready(() =>
+{
 
-function clearWorkSessionCount() {
-  window.localStorage.removeItem('totalWorkSessions');
-}
-
-$(document).ready(() => {
-
+  // Store references to audio elements and adjust volume
   initializeAudio();
 
+  // Check for items in localStorage and load in if found
+  // Items stored locally:
+  // Number of work sessions completed (+1 upon work timer completion)
+  // Items in task list
   initializeStorageItems();
 
-
-  // add existing tasks
-  /*
-    for (i is 0, i less than length of list of tasks in localStorage, i++) {
-      print each task in the taskList object in localStorage
-    }
-  */
-
-  // window.localStorage.removeItem('totalWorkSessions');
 })
 
 const TIMER_INTERVAL = 100;
 
-addtaskbutton.click(function() {
+
+
+/*************************
+
+  Event Listeners/onclick Functions
+
+*************************/
+
+addtaskbutton.click(function()
+{
   var title = tasktitleinput.val();
   addTask(title);
-})
+});
 
+$('#task-title-input').on('keydown', function(e)
+{
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    var title = tasktitleinput.val();
+    addTask(title);
+  }
+});
 
-
-worktimerbutton.click(function() {
+worktimerbutton.click(function()
+{
   var timeLength = worktimerinput.val();
   console.log("Work Timer Clicked; value: " + worktimerinput.val());
 
@@ -230,8 +326,8 @@ worktimerbutton.click(function() {
       // Timer reached 0, do timer end stuff
       timerDisplay.text("00:00");
       clearInterval(timerFunc);
-      alarm.play();
-      addWorkSession();
+      windchimes.play();
+      incrementSessionsCompleted();
       workSessionsDisplayCount.text(getWorkSessions());
     } else {
       // Still time remaining, update time and loop again
@@ -242,7 +338,8 @@ worktimerbutton.click(function() {
 });
 
 // lots of repeating code, refactor later
-breaktimerbutton.click(function() {
+breaktimerbutton.click(function()
+{
   var timeLength = breaktimerinput.val();
   console.log("Break Timer Clicked; value: " + breaktimerinput.val());
 
@@ -279,8 +376,9 @@ breaktimerbutton.click(function() {
   }, TIMER_INTERVAL);
 });
 
-clearsessioncountbutton.click(function() {
+clearsessioncountbutton.click(function()
+{
   clearWorkSessionCount();
   workSessionsDisplayCount.text(getWorkSessions());
-})
+});
 // worktimerinput.addEventListener("click", )
