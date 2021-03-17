@@ -1,5 +1,5 @@
 * {
-  color: white;
+  color: black;
   font-family: Georgia;
   font-size: 20px;
 }
@@ -13,6 +13,13 @@ button {
   margin-right: auto;
   margin-left: auto;
   text-align: center;
+}
+
+.multiple {
+  background-image: url(../img/greenhills_adjusted.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 #header {
@@ -34,16 +41,21 @@ button {
 #left-panel {
   width: 700px;
   background-color: dimgray;
-  padding: 10px;
   margin-right: 10px;
 }
 
-#timerdisplay{
+#timerdisplay {
+  color: white;
   font-size: 90px;
   font-family: 'Courier New', Courier, monospace;
-  background-color: green;
-  padding: 5px;
   text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#timerdisplay-container {
+  background-color: black;
+  opacity: 0.2;
 }
 
 #settings {
@@ -67,7 +79,7 @@ button {
 }
 
 #right-panel {
-  width: 400px;
+  width: 500px;
   background-color: dimgray;
   margin-left: auto;
   padding: 10px;

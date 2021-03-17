@@ -108,6 +108,7 @@ var tasktitleinput = $('#task-title-input');
 var worktimerbutton = $('#worktimerbutton');
 var breaktimerbutton = $('#breaktimerbutton');
 var clearsessioncountbutton = $('#clearsessioncountbutton');
+var cleartasksfinishedbutton = $('#cleartotaltaskscountbutton');
 var addtaskbutton = $('#add-task-button');
 
 // Display
@@ -132,6 +133,7 @@ function getTaskCompletionCount()
 function incrementSessionsCompleted()
 {
   window.localStorage.setItem('totalWorkSessions', getWorkSessions() + 1);
+  workSessionsDisplayCount.text(getWorkSessions());
 }
 
 function incrementTasksCompleted()
@@ -328,7 +330,7 @@ worktimerbutton.click(function()
       clearInterval(timerFunc);
       windchimes.play();
       incrementSessionsCompleted();
-      workSessionsDisplayCount.text(getWorkSessions());
+      
     } else {
       // Still time remaining, update time and loop again
       timerDisplay.text(minutes + ":" + seconds);
@@ -381,4 +383,10 @@ clearsessioncountbutton.click(function()
   clearWorkSessionCount();
   workSessionsDisplayCount.text(getWorkSessions());
 });
+
+cleartasksfinishedbutton.click(function()
+{
+  clearTasksCompletedCount();
+  tasksCompletedDisplayCount.text(getTaskCompletionCount());
+})
 // worktimerinput.addEventListener("click", )
